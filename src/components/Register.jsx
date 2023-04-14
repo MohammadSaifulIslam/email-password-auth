@@ -1,14 +1,14 @@
 import React, { useState } from 'react';
-import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
+import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 import app from '../firebase/firebase_config';
 import { Link } from 'react-router-dom';
-const Login = () => {
+const Register = () => {
     const [error, setError] = useState('');
     const [success, setSuccess] = useState('');
     const auth = getAuth(app)
 
 
-    const handleLogin = event => {
+    const handleRegister = event => {
         setSuccess('')
         event.preventDefault()
         const name = event.target.name.value;
@@ -37,12 +37,12 @@ const Login = () => {
         }
 
         // firebase user create 
-        signInWithEmailAndPassword(auth, email, password)
+        createUserWithEmailAndPassword(auth, email, password)
             .then(result => {
                 const loggedUser = result.user;
                 event.target.reset();
                 console.log(loggedUser)
-                setSuccess('Successfully login.')
+                setSuccess('Successfully register.')
                 setError('')
             })
             .catch(error => {
@@ -53,8 +53,8 @@ const Login = () => {
     }
     return (
         <>
-            <form onSubmit={handleLogin} className="mx-5 form-control bg-slate-100 rounded-lg md:w-1/2 p-5 md:mx-auto my-10">
-                <h2 className='text-accent text-2xl font-semibold mb-5 text-center'>Login Form</h2>
+            <form onSubmit={handleRegister} className="mx-5 form-control bg-slate-100 rounded-lg md:w-1/2 p-5 md:mx-auto mt-10">
+                <h2 className='text-accent text-2xl font-semibold mb-5 text-center'>Register Form</h2>
                 <label className="label">
                     <span className="label-text">User Name</span>
                 </label>
@@ -72,14 +72,14 @@ const Login = () => {
                     <input type="checkbox" className="checkbox checkbox-accent" required />
                     <span className="label-text">Accept terms and conditions</span>
                 </label>
-                <button className='btn btn-accent w-full md:w-fit mx-auto mt-5'>Login</button>
+                <button className='btn btn-accent w-full md:w-fit mx-auto mt-5 text-white'>Register</button>
                 <p className='text-success mt-5 text-center'>{success}</p>
                 <p className='text-error mt-5 text-center'>{error}</p>
-                <p className='text-center'>haven't an account? Please <Link className='text-accent' to='/register'>Register</Link></p>
+                <p className='text-center'>Already have an account? Please <Link className='text-accent' to='/login'>Login</Link></p>
             </form>
         </>
 
     );
 };
 
-export default Login;
+export default Register;
