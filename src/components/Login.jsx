@@ -1,7 +1,11 @@
-import React, { useRef, useState } from 'react';
-import { getAuth, sendPasswordResetEmail, signInWithEmailAndPassword } from "firebase/auth";
+import React, { useState } from 'react';
+import { GoogleAuthProvider, getAuth, signInWithEmailAndPassword, signInWithPopup } from "firebase/auth";
 import app from '../firebase/firebase_config';
 import { Link } from 'react-router-dom';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faSignIn } from '@fortawesome/free-solid-svg-icons'
+
+
 const Login = () => {
     const [error, setError] = useState('');
     const [success, setSuccess] = useState('');
@@ -58,13 +62,30 @@ const Login = () => {
                 setError(error.message)
             })
     }
+    const googleProvider = new GoogleAuthProvider()
+    const handleLoginWithGoogle = () => {
+        signInWithPopup(auth, googleProvider)
+            .then(result => {
+                console.log(result.user)
+                Swal.fire(
+                    'Logged in!',
+                    'You successfully logged in',
+                    'success'
+                )
+
+            })
+            .catch(error => {
+                console.error(error.message)
+            })
+    }
+
     return (
         <form onSubmit={handleLogin} className="mx-5 form-control bg-slate-100 rounded-lg md:w-1/2 p-5 md:mx-auto my-10">
             <h2 className='text-accent text-2xl font-semibold mb-5 text-center'>Login Form</h2>
             <label className="label mt-5">
                 <span className="label-text">User Email</span>
             </label>
-            <input type="email" ref={emailRef} name='email' placeholder="useremail@gmail.com" className="input input-accent input-bordered" required />
+            <input type="email" name='email' placeholder="useremail@gmail.com" className="input input-accent input-bordered" required />
             <label className="label mt-5">
                 <span className="label-text">User Password</span>
             </label>
@@ -74,10 +95,14 @@ const Login = () => {
                 <input type="checkbox" className="checkbox checkbox-accent" required />
                 <span className="label-text">Accept terms and conditions</span>
             </label>
+            {success && <p className='text-success mt-5 text-center'>{success}</p>}
+            {error && <p className='text-error mt-3 text-center'>{error}</p>}
             <button className='btn btn-accent w-full md:w-fit mx-auto mt-5'>Login</button>
-            <p className='text-success mt-5 text-center'>{success}</p>
-            <p className='text-error mt-5 text-center'>{error}</p>
-            <Link to='/forgot_password' className='btn btn-link text-center'> Forgot Password?</Link>
+            <p className='text-center mt-2'>or login with</p>
+            <div className='text-center flex justify-center my-1'>
+                <figure onClick={handleLoginWithGoogle} className='w-8 h-8 flex justify-center items-center cursor-pointer rounded-full bg-white'> <img className='h-6 w-6 object-center' src="https://www.freepnglogos.com/uploads/google-logo-png/google-logo-png-google-icon-logo-png-transparent-svg-vector-bie-supply-14.png" alt="google logo" /></figure>
+            </div>
+            <Link to='/forgot_password' className='inline-block w-fit mx-auto text-center'> <button className='btn btn-link'>Forgot Password?</button></Link>
             <p className='text-center'>haven't an account? Please <Link className='text-accent' to='/register'>Register</Link></p>
         </form>
     );
