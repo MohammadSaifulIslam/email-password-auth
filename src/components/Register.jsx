@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+import { getAuth, createUserWithEmailAndPassword, sendEmailVerification } from "firebase/auth";
 import app from '../firebase/firebase_config';
 import { Link } from 'react-router-dom';
 const Register = () => {
@@ -11,10 +11,9 @@ const Register = () => {
     const handleRegister = event => {
         setSuccess('')
         event.preventDefault()
-        const name = event.target.name.value;
         const email = event.target.email.value;
         const password = event.target.password.value;
-        console.log(name, email)
+        console.log( email , password)
 
         setError('')
 
@@ -44,12 +43,20 @@ const Register = () => {
                 console.log(loggedUser)
                 setSuccess('Successfully register.')
                 setError('')
+                handleEmailVarification(result.user)
             })
             .catch(error => {
                 console.error(error.message);
                 setError(error.message)
             })
 
+    }
+
+    const handleEmailVarification = user =>{
+        sendEmailVerification(user)
+        .then(result =>{
+            console.log(result.user)
+        })
     }
     return (
         <>
