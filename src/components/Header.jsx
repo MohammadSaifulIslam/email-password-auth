@@ -14,6 +14,7 @@ const Header = () => {
               <li><a>Portfolio</a></li>
               <li><a>About</a></li>
               <li><Link to='/register'>Register</Link></li>
+              <li><Link to='/login_with_phone'>Login with phone</Link></li>
             </ul>
           </div>
         </div>

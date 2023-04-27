@@ -10,6 +10,7 @@ import Home from './components/Home';
 import Login from './components/Login';
 import Register from './components/Register';
 import ForgotPassword from './components/ForgotPassword';
+import LoginWithPhone from './components/LoginWithPhone';
 
 
 const router = createBrowserRouter([
@@ -32,6 +33,10 @@ const router = createBrowserRouter([
       {
         path: 'forgot_password',
         element:<ForgotPassword/>
+      },
+      {
+        path: 'login_with_phone',
+        element:<LoginWithPhone/>
       },
     ]
   },

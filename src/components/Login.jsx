@@ -2,8 +2,6 @@ import React, { useState } from 'react';
 import { GoogleAuthProvider, getAuth, signInWithEmailAndPassword, signInWithPopup } from "firebase/auth";
 import app from '../firebase/firebase_config';
 import { Link } from 'react-router-dom';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faSignIn } from '@fortawesome/free-solid-svg-icons'
 
 
 const Login = () => {
